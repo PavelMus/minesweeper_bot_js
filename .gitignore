@@ -1,0 +1,6 @@
+/documentation
+/.vscode
+/src
+/lib/anime.js
+/lib/anime.min.js
+*.png

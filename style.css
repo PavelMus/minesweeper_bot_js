@@ -1,0 +1,125 @@
+#ms_mine_num_box{
+    display: flex;
+    flex-flow: row-reverse;
+    background-color: #212121;
+    margin: 5px 0px 5px 5px;
+}
+#ms_mine_num{
+    font-size: 46px;
+    color: #d50000;
+}
+#ms_timer_box{
+    display: flex;
+    flex-flow: row-reverse;
+    background-color: #212121;
+    margin: 5px 0px 5px -10px;
+}
+#ms_timer{
+    font-size: 46px;
+    color: #d50000;
+}
+
+#ms_face_box{
+    display: flex;
+    justify-content: center;
+    margin: 5px 0px;
+}
+#ms_face{
+    font-size: 46px;
+    background-color: #e0e0e0;
+    border: 4px outset #efefef;
+}
+
+
+/* MINESWEEPER TOP BAR */
+
+#ms_grid_bar{
+    min-width: 670px;
+    height: 100px;
+    background-color: #e0e0e0;
+    border: 14px ridge #efefef;
+    border-bottom: none;
+}
+
+/* MINESWEEPER GRID */
+
+#ms_grid{
+    display: flex;
+    flex-flow: column;
+    min-width: 670px;
+    width: 50%;
+    padding: 25px;
+    margin: 0 auto;
+    background-color: #e0e0e0;
+    border: 14px ridge #efefef;
+}
+.ms_grid_row{
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    justify-content: center;
+}
+.ms_grid_row .ms_grid_box{
+    margin: 1px;
+    min-width: 50px;
+    width: 50px;
+    height: 50px;
+    min-height: 50px;
+    border: 2px outset #8c8c8c;
+}
+
+.ms_grid_row .covered{
+    background-color: #bcbcbc;
+}
+.box_attr_1{
+    color: #66bb6a;
+}
+.box_attr_2{
+    color: #ffee58;
+}
+.box_attr_3{
+    color: #ffa726;
+}
+.box_attr_4{
+    color: #ff7043;
+}
+.box_attr_5{
+    color: #c63f17;
+}
+.box_attr_6, .box_attr_7, .box_attr_8{
+    color: #b91400;
+}
+.box_attr_0, .box_attr_1, .box_attr_2, .box_attr_3, .box_attr_4, .box_attr_5, .box_attr_6, .box_attr_7, .box_attr_8{
+    display: block;
+    width: 45%;
+    margin: 0 auto;
+    font-size: 32px;
+    font-weight: bold;
+    z-index: -1;
+}
+
+.ms_grid_flag{
+    display: block;
+    width: 75%;
+    margin: 0 auto;
+    font-size: 28px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.mine{
+    width: 100%;
+}
+
+.hidden{
+    display: none;
+    visibility: hidden;
+}
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
