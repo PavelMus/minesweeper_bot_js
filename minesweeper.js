@@ -3,7 +3,7 @@ import Bot from './minesweeperBot.js';
 
 const ms_row_size = 11;
 const ms_col_size = 17;
-const ms_mine_num = Math.floor(ms_row_size*ms_col_size*0.15);
+const ms_mine_num = Math.floor(ms_row_size*ms_col_size*0.12);
 const ms_grid_box_tags = [];
 const ms_grid_box_elems = [];
 const ms_grid_attributes = [];
@@ -12,37 +12,47 @@ const ms_grid_flags = [];
 let ms_grid_flag_count = 0;
 
 const ms_grid_revealed = [];
-let ms_grid_revealed_count = 0;
+//let ms_grid_revealed_count = 0;
 
-const faces = new Map([['standard', '😀'], ['mousedown', '😮'], ['lose', '😣'], ['win', '😁'], ['reset', '😉']]);
+const faces = new Map([['standard', '😀'], ['mousedown', '😮'], ['lose', '😣'], ['win', '😎'], ['reset', '😉']]);
 
 const ms_timer = document.getElementById('ms_timer');
 let current_time = 0;
 let gameTimerHandle = null;
 let gameStarted = false;
+let gamePaused = false;
 let gameOver = false;
 let gameWon = false;
 
 let bot;
 let botTimerHandle = null;
-let botButton = document.getElementById('start_button');
 
+//==================================== MINESWEEPER BOT ====================================//
 
 function initMinesweeperBot(){
     bot = new Bot(ms_row_size, ms_col_size, ms_grid_revealed, ms_mine_num);
-
-    botButton.addEventListener('click', (e) =>{
-        e.preventDefault();
-        startBot();
-    });
 }
 
 function startBot(){
-    botTimerHandle = setInterval(runBot, 250);
+    if(gamePaused){
+        gameTimerHandle = setInterval(gameTimer, 1000);
+        botTimerHandle = setInterval(runBot, 250);
+        gamePaused = false;
+    }else if(!gameStarted){
+        botTimerHandle = setInterval(runBot, 250);
+    }else if(gameOver){
+        resetMinesweeper();
+        startBot();
+    }
+}
+
+function pauseBot(){
+    gamePaused = true;
+    clearInterval(botTimerHandle);
+    clearInterval(gameTimerHandle)
 }
 
 function runBot(){
-    console.log("runBot");
     if(!gameOver){
         let box = bot.performMove(ms_grid_revealed);
         botMove(box.row, box.col);
@@ -70,6 +80,9 @@ function botMove(row, col){
     }
 }
 
+//==================================== MINESWEEPER GRID ====================================//
+
+
 function initMinesweeper(){
     initTopBar();
     //initGridAttributes();
@@ -81,45 +94,26 @@ function initMinesweeper(){
 function initTopBar(){
     swapFace('standard');
 
-    let face_box = document.getElementById('ms_face');
-    face_box.addEventListener('mouseenter', (e) => {
-        e.preventDefault();
-        anime({
-            targets: `#ms_face`,
-            backgroundColor: ['#e0e0e0', '#FFF'],
-            easing: 'easeOutExpo'
-        });
-    }, false);
-    face_box.addEventListener('mouseleave', (e) => {
-        e.preventDefault();
-        anime({
-            targets: `#ms_face`,
-            backgroundColor: [ '#FFF', '#e0e0e0'],
-            easing: 'easeOutExpo',
-            update: () =>{
-                face_box.style.border = '4px outset #efefef'
-            }
-        });
-        swapFace('standard');
-    }, false);
-    face_box.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        anime({
-            update: () => {
-                face_box.style.border = '4px inset #efefef';
-            }
-        });
-        swapFace('reset');
-    }, false);
-    face_box.addEventListener('click', (e) => {
-        e.preventDefault();
-        anime({
-            update: () =>{
-                face_box.style.border = '4px outset #efefef'
-            }
-        });
-        resetMinesweeper();
-    }, false);
+    let face_button = document.getElementById('ms_face');
+    face_button.addEventListener('mouseenter', (e) => topBarMouseenter(e, face_button), false);
+    face_button.addEventListener('mouseleave', (e) => topBarMouseleave(e, face_button), false);
+    face_button.addEventListener('mousedown', (e) => topBarMousedown(e, face_button), false);
+    face_button.addEventListener('click', (e) => topBarClick(e, face_button, resetMinesweeper), false);
+
+    let start_button = document.getElementById('start_button');
+
+    start_button.addEventListener('mouseenter', (e) => topBarMouseenter(e, start_button), false);
+    start_button.addEventListener('mouseleave', (e) => topBarMouseleave(e, start_button), false);
+    start_button.addEventListener('mousedown', (e) => topBarMousedown(e, start_button), false);
+    start_button.addEventListener('click', (e) => topBarClick(e, start_button, startBot), false);
+
+    let pause_button = document.getElementById('pause_button');
+
+    pause_button.addEventListener('mouseenter', (e) => topBarMouseenter(e, pause_button), false);
+    pause_button.addEventListener('mouseleave', (e) => topBarMouseleave(e, pause_button), false);
+    pause_button.addEventListener('mousedown', (e) => topBarMousedown(e, pause_button), false);
+    pause_button.addEventListener('click', (e) => topBarClick(e, pause_button, pauseBot), false);
+
 
     updateDisplayMines(0);
 }
@@ -317,12 +311,14 @@ function checkGridBox(row, col){
 }
 
 function checkWinCondition(){
-    ms_grid_revealed_count = ms_grid_revealed.reduce((a, b) => a.concat(b)).reduce((a, b) => {
-         if(b !== null){
-             return a + 1;
-         }else{
-             return a + 0;
-         }});
+    let ms_grid_revealed_count = 0;
+    for(let row = 0; row < ms_row_size; ++row){
+        for(let col = 0; col < ms_col_size; ++col){
+            if(ms_grid_revealed[row][col] !== null){
+                ms_grid_revealed_count++;
+            }
+        }
+    }
     return ms_grid_revealed_count === ms_row_size * ms_col_size - ms_mine_num;
 }
 
@@ -339,18 +335,21 @@ function youLose(trippedMineIndices){
     // Set gameWon state to false
     gameWon = false;
 
+    // Itterating through the revealed array and setting all grid boxed as revealed and removing all flags
+    // in order to prevent the user from being able to select boxes after the game is lost. 
+    for(let i = 0; i < ms_row_size; ++i){
+        for(let j = 0; j < ms_col_size; ++j){
+            ms_grid_revealed[i][j] = 1;
+            if(ms_grid_flags[i][j]){
+                removeFlag(i, j);
+            }
+        }
+    }
     // Grabbing all mine elements and animating their reveal
     let mines = document.querySelectorAll('.mine');
     let trippedMine = document.getElementById(`ms_grid_box_${trippedMineIndices[0]}_${trippedMineIndices[1]}`);
     animateRevealMines(trippedMine, mines);
 
-    // Itterating through the revealed array and setting all grid boxed as revealed
-    // in order to prevent the user from being able to select boxes after the game is lost. 
-    for(let i = 0; i < ms_row_size; ++i){
-        for(let j = 0; j < ms_col_size; ++j){
-            ms_grid_revealed[i][j] = 1;
-        }
-    }
     
     animateYouLose();
 }
@@ -398,10 +397,10 @@ function resetMinesweeper(){
     ms_grid_box_elems.length = 0;
     ms_grid_attributes.length = 0;
     ms_grid_revealed.length = 0;
-    ms_grid_revealed_count = 0;
     ms_grid_flags.length = 0;
 
-    initGridAttributes();
+    bot = null;
+    botTimerHandle = null;
 
     let ms_grid = document.getElementById('ms_grid');
     for(let i = 0; i < ms_row_size; ++i){
@@ -411,6 +410,7 @@ function resetMinesweeper(){
 
     initGridFlags();
     initGrid();
+    initMinesweeperBot();
 
     swapFace('standard');
     updateDisplayMines(0);
@@ -589,6 +589,49 @@ function gridRightClick(e, row, col){
         addFlag(row, col);
     }
 
+}
+
+function topBarMouseenter(e, elem){
+    e.preventDefault();
+    anime({
+        targets: elem,
+        backgroundColor: ['#e0e0e0', '#FFF'],
+        easing: 'easeOutExpo'
+    });
+}
+
+function topBarMouseleave(e, elem){
+    e.preventDefault();
+    anime({
+        targets: elem,
+        backgroundColor: [ '#FFF', '#e0e0e0'],
+        easing: 'easeOutExpo',
+        update: () =>{
+            elem.style.border = '4px outset #efefef'
+        }
+    });
+    swapFace('standard');
+}
+
+function topBarMousedown(e, elem){
+    e.preventDefault();
+    anime({
+        update: () => {
+            elem.style.border = '4px inset #efefef';
+        }
+    });
+    swapFace('reset');
+}
+
+function topBarClick(e, elem, action){
+    e.preventDefault();
+    anime({
+        update: () =>{
+            elem.style.border = '4px outset #efefef'
+        }
+    });
+    swapFace('standard');
+    action();
 }
 
 function addFlag(row, col){

@@ -1,41 +1,90 @@
-#ms_mine_num_box{
-    display: flex;
-    flex-flow: row-reverse;
-    background-color: #212121;
-    margin: 5px 0px 5px 5px;
+body{
+    background-color: #f5f5f5;
 }
-#ms_mine_num{
-    font-size: 46px;
-    color: #d50000;
+.container-xl{
+    max-width: 1440px;
 }
-#ms_timer_box{
-    display: flex;
-    flex-flow: row-reverse;
-    background-color: #212121;
-    margin: 5px 0px 5px -10px;
+#minesweeper{
+    margin-left: 0px!important;
+    margin-right: 0px!important;
+    margin-bottom: 16px;
 }
-#ms_timer{
-    font-size: 46px;
-    color: #d50000;
+#header_container{
+    background-color: #8fa3ad;
+    margin-bottom: 15px;
+    margin-top: 5px;
 }
 
-#ms_face_box{
-    display: flex;
-    justify-content: center;
-    margin: 5px 0px;
+#header_container h1{
+    text-align: center;
+    margin-top: 15px;
+    background-color: #bfd4df;
 }
-#ms_face{
-    font-size: 46px;
+#header_container p{
+    font-size: 110%;
+}
+
+#ms_face_dsc_box, #ms_start_dsc_box, #ms_pause_dsc_box{
+    padding-top: 12px;
+    margin-bottom: 5px;
+    background-color: #90a4ae;
+}
+#ms_face_dsc_box h5, #ms_start_dsc_box h5, #ms_pause_dsc_box h5{
+    text-align: center;
+    background-color: #bfd4df;
+}
+#ms_face_dsc_box p, #ms_start_dsc_box p, #ms_pause_dsc_box p{
+    font-size: 110%;
+}
+
+#ms_face_dsc{
+    font-size: 2.6rem;
     background-color: #e0e0e0;
     border: 4px outset #efefef;
 }
-
-
+#start_dsc, #pause_dsc{
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem;
+    background-color: #e0e0e0;
+    border: 4px outset #efefef;
+    padding-top: 3px;
+}
 /* MINESWEEPER TOP BAR */
+#ms_mine_num_box, #ms_timer_box{
+    display: flex;
+    justify-content: center;
+    align-content: flex-end;
+    flex-direction: column;
+    background-color: #212121;
+}
+
+#ms_timer, #ms_mine_num{
+    font-family: 'Major Mono Display', monospace;
+    font-size: 150%;
+    font-weight: bold;
+
+    margin: 0 auto;
+    color: #d50000;
+}
+
+#ms_face_box, #start_button_box, #pause_button_box{
+    display: flex;
+    justify-content: center;
+    align-content: flex-end;
+    flex-direction: column;
+    margin: 1px 0px;
+}
+
+#start_button, #pause_button, #ms_face{
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 150%;
+    font-weight: bold;
+    background-color: #e0e0e0;
+    margin: 1px auto;
+    border: 4px outset #efefef;
+}
 
 #ms_grid_bar{
-    min-width: 670px;
-    height: 100px;
     background-color: #e0e0e0;
     border: 14px ridge #efefef;
     border-bottom: none;
@@ -46,9 +95,7 @@
 #ms_grid{
     display: flex;
     flex-flow: column;
-    min-width: 670px;
-    width: 50%;
-    padding: 25px;
+    padding: 0.25rem;
     margin: 0 auto;
     background-color: #e0e0e0;
     border: 14px ridge #efefef;
@@ -56,16 +103,19 @@
 .ms_grid_row{
     display: flex;
     flex-flow: row;
-    width: 100%;
     justify-content: center;
 }
 .ms_grid_row .ms_grid_box{
     margin: 1px;
-    min-width: 50px;
-    width: 50px;
-    height: 50px;
-    min-height: 50px;
     border: 2px outset #8c8c8c;
+}
+.ms_grid_box{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    width: 2rem;
+    height: 2rem;
 }
 
 .ms_grid_row .covered{
@@ -90,19 +140,17 @@
     color: #b91400;
 }
 .box_attr_0, .box_attr_1, .box_attr_2, .box_attr_3, .box_attr_4, .box_attr_5, .box_attr_6, .box_attr_7, .box_attr_8{
-    display: block;
-    width: 45%;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 120%;
     margin: 0 auto;
-    font-size: 32px;
     font-weight: bold;
-    z-index: -1;
 }
 
 .ms_grid_flag{
     display: block;
     width: 75%;
     margin: 0 auto;
-    font-size: 28px;
+    font-size: 1.3rem;
     font-weight: bold;
     z-index: 1;
 }

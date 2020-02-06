@@ -6,6 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Major+Mono+Display|Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -13,53 +14,77 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #e3f2fd;">
-        <a class="navbar-brand" href="#">Minesweeper</a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
-            aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Action 1</a>
-                        <a class="dropdown-item" href="#">Action 2</a>
-                    </div>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-    <div class="container">
+    <div class="container-xl pr-3 pl-3 mr-auto ml-auto">
         <div class="row">
-            <div class="col-12" id='ms_grid_bar'>
-                <div class="row">
-                    <div id="ms_mine_num_box" class="col-2">
-                        <span id="ms_mine_num" class="unselectable">000</span>
+            <div class="col-xl-12" id="header_container">
+                <ul class="list-unstyled">
+                    <li class="media">
+                        <!-- img style="height: 80px" src="./ms0.jpg" class="align-self-top mr-3"> -->
+                        <div class="media-body">
+                            <h1>Minesweeper Bot by Pavel Musatov</h1>
+                                <p>
+                                    The Minesweeper Bot is designed to solve the classic oldschool puzzle game of minesweeper. Using pattern matching and probability theory, the bot will attempt to make the most effecient move possible every time. 
+                                    Since Minesweeper is a game of probability some configurations of the grid will require it to make a guess, so victory is not assured.
+                                    Click the start button above the grid if you're interested in seeing the bot do it's thing, or play the game yourself and if you find yourself in a tough spot you can let the bot finish it.
+
+                                </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-12 col-xl-7">
+                <div class="row" id="minesweeper">
+                    <div class="col-12" id='ms_grid_bar'>
+                        <div class="row">
+                            <div id="ms_mine_num_box" class="col-3">
+                                <span id="ms_mine_num" class="unselectable">000</span>
+                            </div>
+                            <div id='pause_button_box' class="col-2">
+                                <span id='pause_button' class="unselectable">PAUSE</span>
+                            </div>
+                            <div id="ms_face_box" class="col-2">
+                                <span id="ms_face" class="unselectable"></span>
+                            </div>
+                            <div id="start_button_box" class="col-2">
+                                <span id="start_button" class="unselectable">START</span>
+                            </div>
+                            <div id="ms_timer_box" class="col-3">
+                                <span id="ms_timer" class="unselectable">00000</span>
+                            </div>
+                        </div>
                     </div>
-                    <div id="ms_face_box" class="col-8">
-                        <span id="ms_face" class="unselectable"></span>
-                    </div>
-                    <div id="ms_timer_box" class="col-2">
-                        <span id="ms_timer" class="unselectable">00000</span>
+                    <div class="col-12" id='ms_grid'>
+        
                     </div>
                 </div>
             </div>
-            <div class="col-12" id='ms_grid'></div>
-            
-            <div class="col-12">
-                <button type="button" class="btn btn-primary" id="start_button">Start Bot</button>
-            </div>
+
+            <div class="col-lg-12 col-xl-5">
+                    <ul class="list-unstyled row">
+                        <li class="media col-lg-4 col-xl-12 rounded" id="ms_face_dsc_box">
+                            <span class="align-self-top mr-3" id="ms_face_dsc">😀</span>
+                            <div class="media-body">
+                                <h5>RESET BUTTON</h5>
+                                <p>Whether you're having a hard time or the odds are not in your favor, fret not, just simply click 😀 button to reset the grid and start over again.</p> 
+                            </div>
+                        </li>
+                        <li class="media col-lg-4 col-xl-12 rounded" id="ms_start_dsc_box">
+                            <span style="font-size: 1.4rem" class="align-self-top mr-3" id="start_dsc">START</span>
+                            <div class="media-body">
+                                <h5>START BUTTON</h5>
+                                <p>Press the start button above the grid to let the bot attempt to solve the grid for you, but remember that Minesweeper is a game of probability and sometimes the bot will have the guess it's next move, so victory is not assured</p>
+                            </div>
+                        </li>
+                        <li class="media col-lg-4 col-xl-12 rounded" id="ms_pause_dsc_box">
+                            <span style="font-size: 1.4rem" class="align-self-top mr-3" id="pause_dsc">PAUSE</span>
+                            <div class="media-body">
+                                <h5>PAUSE BUTTON</h5>
+                                <p>If you feel like taking over control or just simply want to look at the grid in depth, just press the pause button and the bot will halt the execution. But be quick, he's a fast thinker and even a faster clicker.</p>
+                            </div>
+                        </li>
+                      </ul>
+                </div>
         </div>
     </div>
     <!-- Optional JavaScript -->
