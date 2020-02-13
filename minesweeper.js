@@ -26,6 +26,7 @@ let gameWon = false;
 
 let bot;
 let botTimerHandle = null;
+let botRunning = false;
 
 //==================================== MINESWEEPER BOT ====================================//
 
@@ -35,10 +36,18 @@ function initMinesweeperBot(){
 
 function startBot(){
     if(gamePaused){
+        gamePaused = false;
+        botRunning = true;
         gameTimerHandle = setInterval(gameTimer, 1000);
         botTimerHandle = setInterval(runBot, 250);
-        gamePaused = false;
     }else if(!gameStarted){
+        gamePaused = false;
+        botRunning = true;
+        botTimerHandle = setInterval(runBot, 250);
+        gameTimerHandle = setInterval(gameTimer, 1000);
+    }else if(gameStarted && !botRunning){
+        gamePaused = false;
+        botRunning = true;
         botTimerHandle = setInterval(runBot, 250);
     }else if(gameOver){
         resetMinesweeper();
@@ -47,14 +56,21 @@ function startBot(){
 }
 
 function pauseBot(){
-    gamePaused = true;
-    clearInterval(botTimerHandle);
-    clearInterval(gameTimerHandle)
+    if(!gamePaused && botRunning){
+        botRunning = false;
+        gamePaused = true;
+        clearInterval(gameTimerHandle);
+        clearInterval(botTimerHandle);
+    }
 }
 
 function runBot(){
     if(!gameOver){
         let box = bot.performMove(ms_grid_revealed);
+        if(!gameStarted){
+            gameStarted = true;
+            initGridAttributes(box.row, box.col);
+        }
         botMove(box.row, box.col);
     }else{
         clearInterval(botTimerHandle);
@@ -62,13 +78,7 @@ function runBot(){
 }
 
 function botMove(row, col){
-    if(!gameStarted){
-        gameStarted = true;
-        initGridAttributes(row, col);
-        gameTimerHandle = setInterval(gameTimer, 1000);
-    }
     if (ms_grid_revealed[row][col] === null) {
-        swapFace('standard');
         let grid_box = document.getElementById(`ms_grid_box_${row}_${col}`);
         anime({
             targets: grid_box,
@@ -386,12 +396,18 @@ function updateDisplayMines(mines_covered){
 }
 
 function resetMinesweeper(){
+    bot = null;
+    clearInterval(botTimerHandle);
+    botTimerHandle = null;
+    botRunning = false;
+
     gameStarted = false;
     current_time = 0;
     clearInterval(gameTimerHandle);
     gameTimerHandle = null;
     gameOver = false;
     gameWon = false;
+    gamePaused = false;
 
     ms_grid_box_tags.length = 0;
     ms_grid_box_elems.length = 0;
@@ -399,8 +415,6 @@ function resetMinesweeper(){
     ms_grid_revealed.length = 0;
     ms_grid_flags.length = 0;
 
-    bot = null;
-    botTimerHandle = null;
 
     let ms_grid = document.getElementById('ms_grid');
     for(let i = 0; i < ms_row_size; ++i){
@@ -502,17 +516,33 @@ function animateYouWin(){
         easing: 'easeInOutExpo',
         direction: 'alternate',
         loop: 2,
+        endDelay: 1000,
         duration: 1500
     });
 
-    anime({
-        targets: ms_grid_box_elems,
-        rotateZ: {
-            value: 360,
-            duration: 3000,
-            easing: 'easeInOutExpo'
-        }
+    let i = 0;
+    ms_grid_box_elems.forEach(elem_row => {
+        anime({
+            targets: elem_row,
+            scale: [
+                {value: 0.5, easing: 'easeInOutSine', duration: 100},
+                {value: 1.4, easing: 'easeInOutSine', duration: 300},
+                {value: 1.0, easing: 'easeInOutSine', duration: 100}
+            ],
+            delay: 100*i,
+            duration: 500
+        });
+        i++;
     });
+
+    // anime({
+    //     targets: ms_grid_box_elems,
+    //     rotateZ: {
+    //         value: 360,
+    //         duration: 3000,
+    //         easing: 'easeInOutExpo'
+    //     }
+    // });
 }
 
 function gridMouseEnter(e, row, col) {

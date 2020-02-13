@@ -1,5 +1,5 @@
 body{
-    background-color: #f5f5f5;
+    background-color: #f5f5f5!important;
 }
 .container-xl{
     max-width: 1440px;
@@ -16,9 +16,9 @@ body{
 }
 
 #header_container h1{
+    color: #f5f5f5;
     text-align: center;
     margin-top: 15px;
-    background-color: #bfd4df;
 }
 #header_container p{
     font-size: 110%;
@@ -28,6 +28,7 @@ body{
     padding-top: 12px;
     margin-bottom: 5px;
     background-color: #90a4ae;
+    border: 2px solid #f5f5f5;
 }
 #ms_face_dsc_box h5, #ms_start_dsc_box h5, #ms_pause_dsc_box h5{
     text-align: center;
@@ -45,6 +46,7 @@ body{
 #start_dsc, #pause_dsc{
     font-family: 'Share Tech Mono', monospace;
     font-size: 1.2rem;
+    font-weight: bold;
     background-color: #e0e0e0;
     border: 4px outset #efefef;
     padding-top: 3px;
