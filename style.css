@@ -10,13 +10,15 @@ body{
     margin-bottom: 16px;
 }
 #header_container{
-    background-color: #8fa3ad;
+    font-family: 'Roboto';
+    /* background-color: #8fa3ad; */
     margin-bottom: 15px;
     margin-top: 5px;
 }
 
 #header_container h1{
-    color: #f5f5f5;
+    /* color: #f5f5f5; */
+    background-color: #bfd4df;
     text-align: center;
     margin-top: 15px;
 }
@@ -25,10 +27,14 @@ body{
 }
 
 #ms_face_dsc_box, #ms_start_dsc_box, #ms_pause_dsc_box{
+    font-family: 'Roboto';
     padding-top: 12px;
     margin-bottom: 5px;
-    background-color: #90a4ae;
-    border: 2px solid #f5f5f5;
+    /* background-color: #90a4ae; */
+    /* border: 2px solid #f5f5f5; */
+    /* -webkit-box-shadow: 10px 10px 14px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 14px -6px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 14px -6px rgba(0,0,0,0.75); */
 }
 #ms_face_dsc_box h5, #ms_start_dsc_box h5, #ms_pause_dsc_box h5{
     text-align: center;
